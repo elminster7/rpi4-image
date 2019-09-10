@@ -49,28 +49,8 @@ BBLAYERS ?= \
 	$(CURDIR)/meta-openembedded/meta-networking \
 	$(CURDIR)/meta-openembedded/meta-python \
 	$(CURDIR)/meta-openembedded/meta-webserver \
+	$(CURDIR)/meta-raspberrypi \
 	$(CURDIR)/openembedded-core/meta \
-	$(CURDIR)/meta-openpli \
-	$(CURDIR)/meta-dream \
-	$(CURDIR)/meta-vuplus \
-	$(CURDIR)/meta-xsarius.pli5 \
-	$(CURDIR)/meta-qviart \
-	$(CURDIR)/meta-xp \
-	$(CURDIR)/meta-xtrend \
-	$(CURDIR)/meta-formuler \
-	$(CURDIR)/meta-gfutures \
-	$(CURDIR)/meta-xpeedc \
-	$(CURDIR)/meta-zgemma \
-	$(CURDIR)/meta-edision \
-	$(CURDIR)/meta-miraclebox \
-	$(CURDIR)/meta-spycat \
-	$(CURDIR)/meta-gi \
-	$(CURDIR)/meta-sab \
-	$(CURDIR)/meta-gigablue \
-	$(CURDIR)/meta-amiko \
-	$(CURDIR)/meta-axasuhd \
-	$(CURDIR)/meta-maxytec \
-	$(CURDIR)/meta-local \
 	$(CURDIR)/meta-qt5
 
 CONFFILES = \
@@ -106,13 +86,13 @@ all: init
 	@echo
 	@echo " cd $(BUILD_DIR)"
 	@echo " source env.source"
-	@echo " MACHINE=... bitbake openpli-enigma2-image"
+	@echo " MACHINE=... bitbake rpi-basic-image"
 	@echo
 	@echo "	or, if you want to build not just the image, but the optional packages in the feed as well:"
 	@echo
 	@echo " MACHINE=... make feed"
 	@echo "	or:"
-	@echo " MACHINE=... bitbake openpli-enigma2-feed"
+	@echo " MACHINE=... bitbake rpi-basic-feed"
 	@echo
 
 $(BBLAYERS):
@@ -124,11 +104,11 @@ init: $(BBLAYERS) $(CONFFILES)
 
 image: init
 	@echo 'Building image for $(MACHINE)'
-	@. $(TOPDIR)/env.source && cd $(TOPDIR) && bitbake openpli-enigma2-image
+	@. $(TOPDIR)/env.source && cd $(TOPDIR) && bitbake rpi-basic-image
 
 feed: init
 	@echo 'Building feed for $(MACHINE)'
-	@. $(TOPDIR)/env.source && cd $(TOPDIR) && bitbake openpli-enigma2-feed
+	@. $(TOPDIR)/env.source && cd $(TOPDIR) && bitbake rpi-basic-image
 
 update:
 	@echo 'Updating Git repositories...'
@@ -176,10 +156,10 @@ $(TOPDIR)/conf/openpli.conf: $(DEPDIR)/.openpli.conf.$(OPENPLI_CONF_HASH)
 	@echo 'BB_GENERATE_MIRROR_TARBALLS = "0"' >> $@
 	@echo 'BBINCLUDELOGS = "yes"' >> $@
 	@echo 'CONF_VERSION = "1"' >> $@
-	@echo 'DISTRO = "openpli"' >> $@
 	@echo 'EXTRA_IMAGE_FEATURES = "debug-tweaks"' >> $@
 	@echo 'USER_CLASSES = "buildstats"' >> $@
 
+#	@echo 'DISTRO = "openpli"' >> $@
 LOCAL_CONF_HASH := $(call hash, \
 	'LOCAL_CONF_VERSION = "0"' \
 	'CURDIR = "$(CURDIR)"' \
